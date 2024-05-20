@@ -1,5 +1,6 @@
 # Basit Image Processing Tool Fonksiyonları #
-#Python 3.10.9-64b-bit LF UTF8
+# Sağ alt->Python 3.9.13('mvpEnv':venv)
+
 """
 1- Resize Image
 2- Crop Image
@@ -7,15 +8,44 @@
 4-  
 """
 
+"""Hazırlanan Fonksiyonlar:
+1-SplitRGB
+2-Resize
+3-Crop
+4-Rotate
+"""
+
 """Sources:
 Rotate: https://medium.com/analytics-vidhya/rotating-images-with-opencv-and-imutils-99801cb4e03e
-
 
 """
 import cv2
 import numpy as np
+import imutils
 
+def SplitCh(img, ch):#* ikincil.
+    """BGR görüntünün kanallarını ayırıp döndüren fonk.
+    """
+    #(B, G, R) = cv2.split(image)
+    #img = cv2.cvtColor(R, cv2.COLOR_GRAY2RGB)
+    #image[:,:,0]=255
+    image[:,:,1]=0
+    image[:,:,2]=0
+    #print(R.shape)
+    return image
 
+def SplitRGB(img, ch): #* birincil
+    (B, G, R) = cv2.split(img)
+    #img = cv2.cvtColor(R, cv2.COLOR_GRAY2RGB)
+    if(ch=="R"):
+        return R
+    elif(ch=="G"):
+        return B
+    elif(ch=="B"):
+        return B
+    else:
+        return False
+    return R
 
 def Resize(img, scale, interpolation=0): 
     width = int(img.shape[1] * scale / 100)
@@ -36,8 +66,9 @@ def Crop(img, p1, p2):
     cropImg = img[ p1[0] : p2[0], p1[1] : p2[1]  ]
     return cropImg
 
-def Rotate(img, deg, type=0):
-    """Resmi döndürme ve döndürürken ekranda konumlandırma fonks """
+def RotateCV(img, deg, type=0):
+    """Resmi döndürme ve döndürürken ekranda konumlandırma fonksiyonu.
+     Koordinat sistemi + yönüne göredir, saat yönünün tersine döndürür. """
     # get the dimensions of the image and calculate the center of the
     # image
     height, width = img.shape[:2]
@@ -51,22 +82,26 @@ def Rotate(img, deg, type=0):
     rotated = cv2.warpAffine(img, M, (width, height))
     return rotated
 
-def RotateImu(img, deg=45):
-    rotated = imutils.rotate(image, -30)
-
+def Rotate(img, deg, bound=True):
+    if(bound):
+        rotated = imutils.rotate_bound(image, deg)
+    else:
+        rotated = imutils.rotate(img, deg)
+    return rotated
 
 if __name__ == "__main__":
 	# Code:
-    image = cv2.imread("assets/inputs/images/robotlar.png") # assets/inputs/images/robotlar.png
+    image = cv2.imread("assets/inputs/images/colors.png") # assets/inputs/images/robotlar.png
     # Display the image
     #image = Resize(image, 30,interpolation=0)
     #image = Crop(image, (0,0),(500,500))
-    image = Rotate(image, 15)
-    
+    #image = Rotate(image, 80)
+    #image = SplitRGB(image, ch="R")
 
+    print(image.shape)
     cv2.imshow("Image", image)
     # Wait for the user to press a key
-    cv2.waitKey(2000)
+    cv2.waitKey(0)
     # Close all windows
     cv2.destroyAllWindows()
     
