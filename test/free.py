@@ -226,42 +226,45 @@ def FindContourMatch(image, objeKunye, matchRate = 0.95):
                     print("# alanlar benzemiyor!!!-->", objeKunye[0], "-", alan)
                     cv2.drawContours(img, [cnt], contourIdx=0, color=(0, 0, 255),
                                      thickness=2)
+        #Experimental:
+        return img
     except:
         print("Bir hata oluştu...")
 
-while True:
-    # ------------CYCLE HESABI----------------
-    ms = (time.time() - start) * 1000
-    start = time.time()
-    fps = 1000 / ms
-    print("FPS =", fps)
 
-    # ----------------TCP/IP HABERLEŞMESİ-----------------------
-    #grabResult = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
-    if grabResult.GrabSucceeded():
-        # Access the image data
-        image = converter.Convert(grabResult)
-        img = image.GetArray()
-        #img = cv2.rotate(img, 1)
-
-        #************-----------------
-        # Script
-        img = FindContourMatch(img)
-
-        #************-----------------
-        img = Resize(img, 50)
-        img = AddText(img, text="FPS="+str(round(fps, 2)), x=5, y=30,)
-        cv2.imshow("Contour Based Detection ", img)
-        #Resim.ShowImgPlot(img)
-        k = cv2.waitKey(1)
-        if k == 27:
-            # Resim.Kaydet(img, "obje.jpg")  # ESC tuşu son kareyi kaydeder.
-            # grabResult.Release()
-            # sock.close()
-            # Resim.Kaydet(img,"test.png")
-            # Resim.ShowImg(img)
-            break
-
+# while True:
+#     # ------------CYCLE HESABI----------------
+#     ms = (time.time() - start) * 1000
+#     start = time.time()
+#     fps = 1000 / ms
+#     print("FPS =", fps)
+# 
+#     # ----------------TCP/IP HABERLEŞMESİ-----------------------
+#     #grabResult = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+#     if grabResult.GrabSucceeded():
+#         # Access the image data
+#         image = converter.Convert(grabResult)
+#         img = image.GetArray()
+#         #img = cv2.rotate(img, 1)
+# 
+#         #************-----------------
+#         # Script
+#         img = FindContourMatch(img)
+# 
+#         #************-----------------
+#         img = Resize(img, 50)
+#         img = AddText(img, text="FPS="+str(round(fps, 2)), x=5, y=30,)
+#         cv2.imshow("Contour Based Detection ", img)
+#         #Resim.ShowImgPlot(img)
+#         k = cv2.waitKey(1)
+#         if k == 27:
+#             # Resim.Kaydet(img, "obje.jpg")  # ESC tuşu son kareyi kaydeder.
+#             # grabResult.Release()
+#             # sock.close()
+#             # Resim.Kaydet(img,"test.png")
+#             # Resim.ShowImg(img)
+#             break
+# 
 
 
 if __name__ == "__main__":
